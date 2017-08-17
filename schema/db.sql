@@ -100,7 +100,7 @@ CREATE INDEX schedules_idx1 ON schedules(type);
 CREATE INDEX schedules_idx2 ON schedules(status);
 
 INSERT INTO user_roles(name, descr)
-VALUES('Administrator','For the Administrators'), ('Basic', 'For the basic users'), ('Warehouse Manager', 'The warehouse manager');
+VALUES('Administrator','For the Administrators'), ('Basic', 'For the basic users');
 
 INSERT INTO user_role_permissions(user_role, sys_module,sys_perms)
 VALUES
@@ -108,11 +108,11 @@ VALUES
 
 INSERT INTO users(firstname,lastname,username,telephone,password,email,user_role,is_system_user)
 VALUES
-        ('Samuel','Sekiwere','admin', '+256782820208', crypt('admin',gen_salt('bf')),'sekiskylink@gmail.com',
+        ('Samuel','Sekiwere','', '+256782820XXX', crypt('admin',gen_salt('bf')),'',
         (SELECT id FROM user_roles WHERE name ='Administrator'),'t'),
-        ('Guest','User','guest', '+256753475676', crypt('guest',gen_salt('bf')),'sekiskylink@gmail.com',
+        ('Guest','User','guest', '+256753475XXX', crypt('guest',gen_salt('bf')),'',
         (SELECT id FROM user_roles WHERE name ='Basic'),'t'),
-        ('Ivan','Muguya','ivan', '+256756253430', crypt('ivan',gen_salt('bf')),'sekiskylink@gmail.com',
+        ('Ivan','Muguya','', '+256756253XXX', crypt('ivan',gen_salt('bf')),'',
         (SELECT id FROM user_roles WHERE name ='Warehouse Manager'),'f');
 
 
