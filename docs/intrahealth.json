@@ -1,0 +1,355 @@
+{
+  "campaigns": [], 
+  "version": 10, 
+  "site": "https://app.rapidpro.io", 
+  "flows": [
+    {
+      "base_language": "base", 
+      "action_sets": [
+        {
+          "y": 121, 
+          "x": 828, 
+          "destination": null, 
+          "uuid": "d7f03b08-4462-4500-a2f6-8674fe01658a", 
+          "actions": [
+            {
+              "msg": {
+                "base": "The service is temporarily down. Please try again later."
+              }, 
+              "media": {}, 
+              "send_all": false, 
+              "type": "reply"
+            }
+          ]
+        }, 
+        {
+          "y": 327, 
+          "x": 507, 
+          "destination": null, 
+          "uuid": "2a733aac-4380-4cc4-9505-1123550f2df2", 
+          "actions": [
+            {
+              "msg": {
+                "base": "@extra.message"
+              }, 
+              "media": {}, 
+              "send_all": false, 
+              "type": "reply"
+            }
+          ]
+        }, 
+        {
+          "y": 279, 
+          "x": 112, 
+          "destination": "bee964ac-4115-49b5-b251-111019ab69c3", 
+          "uuid": "a34d2f45-004d-4527-9ee7-7b5f9e6c2e81", 
+          "actions": [
+            {
+              "msg": {
+                "base": "There are many health workers with that same name. Please respond with their phone number and we search with that."
+              }, 
+              "media": {}, 
+              "send_all": false, 
+              "type": "reply"
+            }
+          ]
+        }, 
+        {
+          "y": 340, 
+          "x": 852, 
+          "destination": null, 
+          "uuid": "eb911412-5e97-44c3-aa04-21e4a0e56cb7", 
+          "actions": [
+            {
+              "msg": {
+                "base": "The phone number or registration number is in the wrong format"
+              }, 
+              "media": {}, 
+              "send_all": false, 
+              "type": "reply"
+            }
+          ]
+        }, 
+        {
+          "y": 492, 
+          "x": 144, 
+          "destination": null, 
+          "uuid": "49336fa2-223a-4467-b5a3-c074e56108a8", 
+          "actions": [
+            {
+              "msg": {
+                "base": "@extra.message"
+              }, 
+              "media": {}, 
+              "send_all": false, 
+              "type": "reply"
+            }
+          ]
+        }
+      ], 
+      "version": 10, 
+      "flow_type": "F", 
+      "entry": "9d400070-b01d-485e-80f8-f34c219a6f75", 
+      "rule_sets": [
+        {
+          "uuid": "9d400070-b01d-485e-80f8-f34c219a6f75", 
+          "rules": [
+            {
+              "test": {
+                "test": "true", 
+                "type": "true"
+              }, 
+              "category": {
+                "base": "All Responses"
+              }, 
+              "destination": "54e3ae40-e9e1-43f7-a11c-ba5537306a6c", 
+              "uuid": "141f0f4a-8de8-494d-914d-62a88d3ee94c", 
+              "destination_type": "R"
+            }
+          ], 
+          "ruleset_type": "wait_message", 
+          "label": "Report", 
+          "operand": "@step.value", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 34, 
+          "x": 302, 
+          "config": {}
+        }, 
+        {
+          "uuid": "54e3ae40-e9e1-43f7-a11c-ba5537306a6c", 
+          "rules": [
+            {
+              "test": {
+                "test": "true", 
+                "type": "true"
+              }, 
+              "category": {
+                "base": "All Responses"
+              }, 
+              "destination": "1441529b-bb74-4290-82ce-8694954267c9", 
+              "uuid": "fea10b02-637e-4679-91a7-b0acbcc8b49d", 
+              "destination_type": "R"
+            }
+          ], 
+          "ruleset_type": "expression", 
+          "label": "msg", 
+          "operand": "@(REMOVE_FIRST_WORD(SUBSTITUTE(step.value, \"\"\"\", \"\")))", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 35, 
+          "x": 619, 
+          "config": {}
+        }, 
+        {
+          "uuid": "1441529b-bb74-4290-82ce-8694954267c9", 
+          "rules": [
+            {
+              "test": {
+                "status": "success", 
+                "type": "webhook_status"
+              }, 
+              "category": {
+                "base": "Success"
+              }, 
+              "destination": "c0264810-5906-401f-a3a5-d3e40c5a4174", 
+              "uuid": "11445892-1ae2-4291-8efe-f83f69074775", 
+              "destination_type": "R"
+            }, 
+            {
+              "test": {
+                "status": "failure", 
+                "type": "webhook_status"
+              }, 
+              "category": {
+                "base": "Failure"
+              }, 
+              "destination": "d7f03b08-4462-4500-a2f6-8674fe01658a", 
+              "uuid": "66fdf950-be7b-4ed4-8eac-79d57d7d4af6", 
+              "destination_type": "A"
+            }
+          ], 
+          "ruleset_type": "webhook", 
+          "label": "resp", 
+          "operand": "@step.value", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 130, 
+          "x": 465, 
+          "config": {
+            "webhook": "http://localhost:8080/api/v1/healthworker?phone=@contact.tel_e164&input=name", 
+            "webhook_action": "POST", 
+            "webhook_headers": []
+          }
+        }, 
+        {
+          "uuid": "c0264810-5906-401f-a3a5-d3e40c5a4174", 
+          "rules": [
+            {
+              "test": {
+                "test": "3", 
+                "type": "gt"
+              }, 
+              "category": {
+                "base": "more than three"
+              }, 
+              "destination": "a34d2f45-004d-4527-9ee7-7b5f9e6c2e81", 
+              "uuid": "82e7e959-f0f8-4c0d-a2d7-e424e5e8a872", 
+              "destination_type": "A"
+            }, 
+            {
+              "test": {
+                "max": "3", 
+                "type": "between", 
+                "min": "1"
+              }, 
+              "category": {
+                "base": "less than four"
+              }, 
+              "destination": "2a733aac-4380-4cc4-9505-1123550f2df2", 
+              "uuid": "42339c21-10c6-49e9-9a1b-860d5eff3231", 
+              "destination_type": "A"
+            }, 
+            {
+              "test": {
+                "test": "0", 
+                "type": "eq"
+              }, 
+              "category": {
+                "base": "zero"
+              }, 
+              "destination": "2a733aac-4380-4cc4-9505-1123550f2df2", 
+              "uuid": "4d6805c7-1c59-4acf-b53f-b800c206fc12", 
+              "destination_type": "A"
+            }, 
+            {
+              "test": {
+                "test": "true", 
+                "type": "true"
+              }, 
+              "category": {
+                "base": "Other"
+              }, 
+              "destination": "d7f03b08-4462-4500-a2f6-8674fe01658a", 
+              "uuid": "edb6f316-e7f1-41d6-b845-e17f41dac14d", 
+              "destination_type": "A"
+            }
+          ], 
+          "ruleset_type": "expression", 
+          "label": "doctors found", 
+          "operand": "@extra.count", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 231, 
+          "x": 336, 
+          "config": {}
+        }, 
+        {
+          "uuid": "bee964ac-4115-49b5-b251-111019ab69c3", 
+          "rules": [
+            {
+              "test": {
+                "test": {}, 
+                "type": "not_empty"
+              }, 
+              "category": {
+                "base": "number"
+              }, 
+              "destination": "e74b83ef-e4d5-4a85-b1dc-066d60b7ee24", 
+              "uuid": "a3b32dc0-c348-42ce-9e54-bdeed44bfe96", 
+              "destination_type": "R"
+            }, 
+            {
+              "test": {
+                "test": "true", 
+                "type": "true"
+              }, 
+              "category": {
+                "base": "Other"
+              }, 
+              "destination": "eb911412-5e97-44c3-aa04-21e4a0e56cb7", 
+              "uuid": "0acd85b3-ed67-4e46-9feb-9f0e20637af0", 
+              "destination_type": "A"
+            }
+          ], 
+          "ruleset_type": "wait_message", 
+          "label": "msg2", 
+          "operand": "@step.value", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 405, 
+          "x": 420, 
+          "config": {}
+        }, 
+        {
+          "uuid": "e74b83ef-e4d5-4a85-b1dc-066d60b7ee24", 
+          "rules": [
+            {
+              "test": {
+                "status": "success", 
+                "type": "webhook_status"
+              }, 
+              "category": {
+                "base": "Success"
+              }, 
+              "destination": "49336fa2-223a-4467-b5a3-c074e56108a8", 
+              "uuid": "aa0ff133-5daf-49f9-a11f-181e29e451bc", 
+              "destination_type": "A"
+            }, 
+            {
+              "test": {
+                "status": "failure", 
+                "type": "webhook_status"
+              }, 
+              "category": {
+                "base": "Failure"
+              }, 
+              "destination": "d7f03b08-4462-4500-a2f6-8674fe01658a", 
+              "uuid": "897a15dd-2303-4385-9b21-22ebecc268c4", 
+              "destination_type": "A"
+            }
+          ], 
+          "ruleset_type": "webhook", 
+          "label": "Response 7", 
+          "operand": "@step.value", 
+          "finished_key": null, 
+          "response_type": "", 
+          "y": 513, 
+          "x": 419, 
+          "config": {
+            "webhook": "http://localhost:8080/api/v1/healthworker?phone=@contact.tel_e164&input=number", 
+            "webhook_action": "POST", 
+            "webhook_headers": []
+          }
+        }
+      ], 
+      "metadata": {
+        "uuid": "9e14eacd-7aa4-4a6c-9bfa-4d601727eb6c", 
+        "notes": [
+          {
+            "y": 16, 
+            "x": 60, 
+            "body": "If many (more than 3) are found we can search with telephone number or registration number**.", 
+            "title": "New Note\nUsage:\nHW Firstname Lastname\neg:\nHW Ismail Wadembere\n\nIf 3 or less results found, return all."
+          }
+        ], 
+        "expires": 60, 
+        "name": "Search iHRIS Health Workers", 
+        "saved_on": "2017-08-17T13:26:47.621944Z", 
+        "revision": 215
+      }
+    }
+  ], 
+  "triggers": [
+    {
+      "trigger_type": "K", 
+      "flow": {
+        "name": "Search iHRIS Health Workers", 
+        "uuid": "9e14eacd-7aa4-4a6c-9bfa-4d601727eb6c"
+      }, 
+      "groups": [], 
+      "keyword": "hw", 
+      "channel": null
+    }
+  ]
+}
